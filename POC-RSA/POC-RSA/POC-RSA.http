@@ -1,0 +1,6 @@
+@POC_RSA_HostAddress = http://localhost:5249
+
+GET {{POC_RSA_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
