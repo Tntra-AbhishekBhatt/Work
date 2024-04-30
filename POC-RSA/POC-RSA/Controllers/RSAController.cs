@@ -8,29 +8,38 @@ namespace POC_RSA.Controllers
     [ApiController]
     public class RSAController : ControllerBase
     {
-        private readonly RSARepository _rsaRepository;
+        private readonly RSAEncryption rsaEncryption;
+
         public RSAController()
         {
-            _rsaRepository = new RSARepository();
+            rsaEncryption = new RSAEncryption();
         }
 
-        [HttpPost("generatekeys")]
-        public object GenerateKeys(string type)
+        [HttpGet("publickey")]
+        public ActionResult<string> GetPublicKey()
         {
-            return _rsaRepository.GenerateKeys(type);
+            return Ok(rsaEncryption.GetPublicKey());
+        }
+
+        [HttpGet("privatekey")]
+        public ActionResult<string> GetPrivateKey()
+        {
+            return Ok(rsaEncryption.GetPrivateKey());
         }
 
         [HttpPost("encrypt")]
-        public object Encryption(string plaintext)
+        public ActionResult<string> Encrypt([FromBody] string plainText, [FromQuery] string publicKey)
         {
-            return _rsaRepository.Encryption(plaintext);
+            string encryptedText = rsaEncryption.Encrypt(plainText, publicKey);
+            return Ok(encryptedText);
         }
 
         [HttpPost("decrypt")]
-        public object Decription(string ciphertext)
+        public ActionResult<string> Decrypt([FromBody] string encryptedText, [FromQuery] string privateKey)
         {
-            return _rsaRepository.Decryption(ciphertext);
+            rsaEncryption.LoadPrivateKey(privateKey);
+            string decryptedText = rsaEncryption.Decrypt(encryptedText);
+            return Ok(decryptedText);
         }
-
     }
 }
