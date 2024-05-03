@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using POC_RSA.Data;
 using POC_RSA.Dto;
 using POC_RSA.Model;
 using POC_RSA.Repository;
@@ -12,18 +11,20 @@ namespace POC_RSA.Controllers
     [ApiController]
     public class RSAServiceController : ControllerBase
     {
-        public readonly RSARepository rSARepository;
+        public readonly IRSARepository _rSARepository;
+
         ICryptographyService _cryptographyService;
-        public RSAServiceController(ICryptographyService cryptographyService,AppDBContext appDBContext)
+        IMapper _mapper;
+        public RSAServiceController(ICryptographyService cryptographyService, IMapper mapper, IRSARepository rSARepository)
         {
             _cryptographyService = cryptographyService;
-            rSARepository = new RSARepository(cryptographyService,appDBContext);
+            _rSARepository = rSARepository;
         }
 
         [HttpPost("Encrypt")]
-        public object Encryption(DetailsDto PlainText)
+        public object Encryption(TestTblDto PlainText)
         {
-            return rSARepository.Encryption(PlainText);
+            return _rSARepository.Encryption(PlainText);
         }
 
         [HttpGet("GetPublicKey")]
@@ -35,19 +36,19 @@ namespace POC_RSA.Controllers
         [HttpPost("Decrypt")]
         public object Decryption(string CipherText)
         {
-            return rSARepository.Decryption(CipherText);
+            return _rSARepository.Decryption(CipherText);
         }
 
         [HttpPost("Encryptobject")]
         public object EncryptionObject(TestTbl PlainText, string pk)
         {
-            return rSARepository.Encryption<TestTbl>(PlainText, pk);
+            return _rSARepository.Encryption<TestTbl>(PlainText, pk);
         }
 
         [HttpPost("Decryptobject")]
         public object Decryptionobject(string CipherText)
         {
-            return rSARepository.Decryptionobject<TestTbl>(CipherText);
+            return _rSARepository.Decryptionobject<TestTbl>(CipherText);
         }
     }
 }

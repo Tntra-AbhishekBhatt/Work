@@ -1,38 +1,26 @@
-﻿using Azure.Core;
+﻿using AutoMapper;
 using POC_RSA.Data;
 using POC_RSA.Dto;
-using POC_RSA.Model;
 using POC_RSA.Services;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace POC_RSA.Repository
 {
-    public class RSARepository
+    public class RSARepository : IRSARepository
     {
         private readonly ICryptographyService cryptographyService;
+        private readonly IMapper _mapper;
         private readonly AppDBContext appDBContext;
 
-        public RSARepository(ICryptographyService cryptography,AppDBContext appDBContext)
+        public RSARepository(ICryptographyService cryptography, AppDBContext appDBContext, IMapper mapper)
         {
-            //cryptographyService = new CryptographyService();
             cryptographyService = cryptography;
             this.appDBContext = appDBContext;
+            this._mapper = mapper;
         }
 
-        public object Encryption(DetailsDto plaintext)
+        public object Encryption(TestTblDto plaintext)
         {
             return cryptographyService.Encrypt(plaintext);
-
-            //var data = cryptographyService.Encrypt(plaintext);
-
-            //if (data == null) throw new ArgumentNullException(nameof(plaintext));
-            //TestTbl testTbl = new TestTbl();
-            //testTbl.Data = plaintext;
-            //appDBContext.TestTbl.Add(testTbl);
-            //appDBContext.SaveChanges();
-
-            //return data;
         }
 
         public object Encryption<T>(T plaintext, string pk)

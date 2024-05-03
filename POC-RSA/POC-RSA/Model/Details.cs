@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-
 namespace POC_RSA.Model
 {
     public class Details
@@ -9,6 +8,5 @@ namespace POC_RSA.Model
         public string Name { get; set; }
         public string PublicKey{ get; set; }
         public string PrivateKey{ get; set; }
-
     }
 }

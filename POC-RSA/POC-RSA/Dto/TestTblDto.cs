@@ -1,9 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-namespace POC_RSA.Model
+﻿namespace POC_RSA.Dto
 {
-    public class TestTbl
+    public class TestTblDto
     {
-        [Key]
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

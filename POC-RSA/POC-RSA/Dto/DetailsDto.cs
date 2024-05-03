@@ -1,5 +1,4 @@
-﻿
-namespace POC_RSA.Dto
+﻿namespace POC_RSA.Dto
 {
     public class DetailsDto
     {
